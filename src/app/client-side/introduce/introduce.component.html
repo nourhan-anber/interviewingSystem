@@ -1,0 +1,6 @@
+<p>Hello this is {{companyName}}'s interview bot. I'll be happily doing the interview today, and will illustrate the RULES for you now.  Read them carefully  and mark each one you're done reading to be  able to start the interview</p>
+
+<ul *ngFor="let rule of rules">
+    <li><input type="checkbox" [id]="rule.id" [checked]="rule.checked" (change)="changeCheckedStatus(rule.id)"> {{rule.name}}</li>
+</ul>
+<button class="btn btn-primary" *ngIf="allRulesChecked" [routerLink]="['/question',1,1]">Next</button>

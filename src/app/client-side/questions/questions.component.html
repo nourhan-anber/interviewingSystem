@@ -1,0 +1,19 @@
+<div class="card">
+    <div class="card-header">
+        Question {{toWords.convert(currentQuestion.id)}}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{currentQuestion.title}}</h5>
+        <div class="card-text">
+            <div *ngIf="currentQuestion.questionType == 'WH question'">
+                <textarea rows="4" cols="100%" placeholder="Write your answer" [(ngModel)]="currentQuestion.answer">Write your answer</textarea>
+            </div>
+            <div *ngIf="currentQuestion.questionType == 'Multiple choice'">
+                <div *ngFor="let choice of currentQuestion.choices">
+                    <input type="radio" [(ngModel)]="currentQuestion.answer" name="choice" [value]="choice">{{choice}}
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" [routerLink]="['/question', currentLevel, currentQuestion.id+1]">Next Question</button>
+    </div>
+</div>
