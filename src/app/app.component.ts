@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpService } from './Service/http.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'interviewingSystem';
+  ngOnInit(): void{
+    this.http.addCurrentUser(1);
+  }
+  constructor(private http: HttpService) { 
+  }
 }

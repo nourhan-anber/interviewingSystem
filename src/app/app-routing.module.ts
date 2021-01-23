@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'start', 'pathMatch': 'full'},
   {path: '', component: ClientSideComponent, children: [
     {path: 'start', component: IntroduceComponent},
-    {path: 'question/:level/:questionId', component: QuestionsComponent}
+    {path: 'question/:questionId', component: QuestionsComponent},
+    {path: 'thankyou', component: ClientSideComponent}
   ]}
 ];
 

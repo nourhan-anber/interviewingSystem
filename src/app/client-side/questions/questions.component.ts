@@ -2,7 +2,7 @@ import { createUrlResolverWithoutPackagePrefix } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpService } from 'src/app/Service/http.service';
-import { Question } from '../data';
+import { Question, User } from '../data';
 import { ToWords } from 'to-words';
 
 @Component({
@@ -15,22 +15,33 @@ export class QuestionsComponent implements OnInit {
   questionsList: Question[];
   currentQuestionId: number;
   currentQuestion: Question;
-  currentLevel: number;
+  currentUser: User;
+  currentUserId: number;
   toWords = new ToWords();
-  
-  constructor(private http: HttpService, private route: ActivatedRoute) { }
+  finalQuestion: boolean;
+  answer;
+
+  constructor(private http: HttpService, private route: ActivatedRoute) { 
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(result=>{
+      this.fetchCurrentUser();
       this.currentQuestionId = result.questionId;
-      this.currentLevel = result.level;
+      this.currentUserId= result.userId;
       this.fetchQuestions();
+      
     });
 
   }
 
+  fetchCurrentUser(){
+    this.currentUser = JSON.parse(localStorage.getItem('user'));
+    console.log(this.currentUser);
+  }
   fetchQuestions(){
-    this.http.getLevelQuestion(this.currentLevel).subscribe((result: Question[])=>{
+    this.http.getLevelQuestion(this.currentUser.level).subscribe((result: Question[])=>{
+      console.log(result);
       this.questionsList = result;
     })
     this.getCurrentQuestion();
@@ -43,7 +54,33 @@ export class QuestionsComponent implements OnInit {
           this.currentQuestion = question;
         }
       })
+      this.checkFinalQuestion();
     }
   }
 
+  calculateTotal(){
+    console.log(this.currentUser.total);
+    if(this.currentQuestion.expectedAnswer.includes(this.answer)){
+      console.log('correct!')
+      this.currentUser.total += this.currentQuestion.weight;
+    }
+  }
+  checkFinalQuestion(){
+    if(this.currentQuestionId == this.questionsList.length){
+      this.finalQuestion = true;
+
+    }
+  }
+
+  addCurrentAnswerToList(){
+    this.calculateTotal();
+    this.currentUser.answers.push(this.answer);
+    this.http.updateCurrentUser(this.currentUser);
+  }
+
+  finalStep(){
+    this.addCurrentAnswerToList();
+    this.http.addNewInterview(this.currentUser);
+    localStorage.removeItem('user');
+  }
 }

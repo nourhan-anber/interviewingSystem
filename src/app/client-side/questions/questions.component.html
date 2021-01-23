@@ -6,14 +6,16 @@
         <h5 class="card-title">{{currentQuestion.title}}</h5>
         <div class="card-text">
             <div *ngIf="currentQuestion.questionType == 'WH question'">
-                <textarea rows="4" cols="100%" placeholder="Write your answer" [(ngModel)]="currentQuestion.answer">Write your answer</textarea>
+                <textarea rows="4" cols="100%" placeholder="Write your answer" [(ngModel)]="answer">Write your answer</textarea>
             </div>
             <div *ngIf="currentQuestion.questionType == 'Multiple choice'">
                 <div *ngFor="let choice of currentQuestion.choices">
-                    <input type="radio" [(ngModel)]="currentQuestion.answer" name="choice" [value]="choice">{{choice}}
+                    <input type="radio" [(ngModel)]="answer" name="choice" [value]="choice">{{choice}}
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" [routerLink]="['/question', currentLevel, currentQuestion.id+1]">Next Question</button>
+        <button class="btn btn-primary" (click)="addCurrentAnswerToList()" [routerLink]="['/question', currentQuestion.id+1]" *ngIf="!finalQuestion">Next Question</button>
+        <button class="btn btn-primary" (click)="finalStep()" [routerLink]="['/thankyou']" *ngIf="finalQuestion">Finish</button>
+
     </div>
 </div>

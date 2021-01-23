@@ -13,5 +13,14 @@ export interface Question{
     level: number,
     questionType: string,
     choices: string[],
-    answer: string
+}
+
+export interface User{
+    id: number,
+    name: string,
+    email: string,
+    phoneNumber: string,
+    answers: string[],
+    level: number,
+    total: number
 }

@@ -3,4 +3,4 @@
 <ul *ngFor="let rule of rules">
     <li><input type="checkbox" [id]="rule.id" [checked]="rule.checked" (change)="changeCheckedStatus(rule.id)"> {{rule.name}}</li>
 </ul>
-<button class="btn btn-primary" *ngIf="allRulesChecked" [routerLink]="['/question',1,1]">Next</button>
+<button class="btn btn-primary" *ngIf="allRulesChecked" [routerLink]="['/question',1]">Next</button>
